@@ -1,46 +1,71 @@
 ﻿#include <iostream>
 using namespace std;
 
-// Структура для збереження інформації про студента
-struct Student {
-    string name;
-    int age;
-    double average_grade;
+struct BankAccount {
+    string ownerName;
+    string accountNumber;
+    double balance = 0;
 };
 
 int main() {
-    
-    system("chcp 1251 > nul"); //підключення української мови
-    
-    int count;
-    cout << "Введіть кількість студентів: ";
-    cin >> count;
+    system("chcp 1251 > nul"); // підключення української мови
 
-    // Динамічне виділення пам'яті для масиву студентів
-    Student* students = new Student[count];
+    BankAccount account;
+    int choice;
+    double amount;
 
-    // Введення даних студентів
-    for (int i = 0; i < count; ++i) {
-        cout << "\nСтудент #" << i + 1 << ":\n";
-        cout << "Ім'я: ";
-        cin >> students[i].name;
-        cout << "Вік: ";
-        cin >> students[i].age;
-        cout << "Середній бал: ";
-        cin >> students[i].average_grade;
+    cout << "Введіть ім'я власника рахунку: ";
+    cin >> account.ownerName;
+
+    cout << "Введіть номер рахунку: ";
+    cin >> account.accountNumber;
+
+    while (true) {
+        cout << "\nМеню:\n";
+        cout << "1. Поповнити рахунок\n";
+        cout << "2. Зняти гроші\n";
+        cout << "3. Показати баланс\n";
+        cout << "4. Вихід\n";
+        cout << "Ваш вибір: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Введіть суму для поповнення: ";
+            cin >> amount;
+            if (amount > 0) {
+                account.balance += amount;
+                cout << "Баланс поповнено. Поточний баланс: " << account.balance << endl;
+            }
+            else {
+                cout << "Сума повинна бути позитивною.\n";
+            }
+            break;
+
+        case 2:
+            cout << "Введіть суму для зняття: ";
+            cin >> amount;
+            if (amount > 0 && amount <= account.balance) {
+                account.balance -= amount;
+                cout << "Зняття успішне. Поточний баланс: " << account.balance << endl;
+            }
+            else {
+                cout << "Недостатньо коштів або неправильна сума.\n";
+            }
+            break;
+
+        case 3:
+            cout << "Поточний баланс: " << account.balance << endl;
+            break;
+
+        case 4:
+            cout << "Вихід з програми.\n";
+            return 0;
+
+        default:
+            cout << "Невірний вибір. Спробуйте знову.\n";
+        }
     }
 
-    // Виведення інформації про студентів
-    cout << "\nІнформація про студентів:\n";
-    for (int i = 0; i < count; ++i) {
-        cout << "Студент #" << i + 1 << ": ";
-        cout << "Ім'я: " << students[i].name
-            << ", Вік: " << students[i].age
-            << ", Середній бал: " << students[i].average_grade << endl;
-    }
-
-    // Звільнення пам'яті
-    delete[] students;
-
-
+   
 }
