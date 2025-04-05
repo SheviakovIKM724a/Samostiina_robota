@@ -1,71 +1,82 @@
 ﻿#include <iostream>
+
 using namespace std;
 
-struct BankAccount {
-    string ownerName;
-    string accountNumber;
-    double balance = 0;
+struct Product {
+    char name[50];  // Назва товару
+    float price;    // Ціна товару
+    int quantity;   // Кількість товару на складі
 };
 
 int main() {
-    system("chcp 1251 > nul"); // підключення української мови
 
-    BankAccount account;
+    system("chcp 1251 > nul"); //підключення української мови
+
+    Product products[10];  // Масив для 10 товарів
+    int count = 0;         // Лічильник для кількості товарів
     int choice;
-    double amount;
-
-    cout << "Введіть ім'я власника рахунку: ";
-    cin >> account.ownerName;
-
-    cout << "Введіть номер рахунку: ";
-    cin >> account.accountNumber;
 
     while (true) {
         cout << "\nМеню:\n";
-        cout << "1. Поповнити рахунок\n";
-        cout << "2. Зняти гроші\n";
-        cout << "3. Показати баланс\n";
-        cout << "4. Вихід\n";
-        cout << "Ваш вибір: ";
+        cout << "1. Додати товар\n";
+        cout << "2. Оновити кількість товару\n";
+        cout << "3. Показати всі товари\n";
+        cout << "4. Вийти\n";
+        cout << "Виберіть опцію: ";
         cin >> choice;
 
-        switch (choice) {
-        case 1:
-            cout << "Введіть суму для поповнення: ";
-            cin >> amount;
-            if (amount > 0) {
-                account.balance += amount;
-                cout << "Баланс поповнено. Поточний баланс: " << account.balance << endl;
-            }
-            else {
-                cout << "Сума повинна бути позитивною.\n";
-            }
-            break;
+        if (choice == 1) {
+            cout << "Введіть назву товару: ";
+            cin >> products[count].name;
+            cout << "Введіть ціну товару: ";
+            cin >> products[count].price;
+            cout << "Введіть кількість товару: ";
+            cin >> products[count].quantity;
+            count++;
+        }
+        else if (choice == 2) {
+            char name[50];
+            cout << "Введіть назву товару: ";
+            cin >> name;
 
-        case 2:
-            cout << "Введіть суму для зняття: ";
-            cin >> amount;
-            if (amount > 0 && amount <= account.balance) {
-                account.balance -= amount;
-                cout << "Зняття успішне. Поточний баланс: " << account.balance << endl;
-            }
-            else {
-                cout << "Недостатньо коштів або неправильна сума.\n";
-            }
-            break;
+            bool found = false;
+            for (int i = 0; i < count; i++) {
+                // Порівнюємо рядки по символах
+                for (int j = 0; products[i].name[j] != '\0' || name[j] != '\0'; j++) {
+                    if (products[i].name[j] != name[j]) {
+                        found = false;
+                        break;
+                    }
+                    else {
+                        found = true;
+                    }
+                }
 
-        case 3:
-            cout << "Поточний баланс: " << account.balance << endl;
-            break;
+                if (found) {
+                    int quantity;
+                    cout << "Введіть нову кількість товару: ";
+                    cin >> quantity;
+                    products[i].quantity = quantity;
+                    break;
+                }
+            }
 
-        case 4:
+            if (!found) {
+                cout << "Товар не знайдено.\n";
+            }
+        }
+        else if (choice == 3) {
+            for (int i = 0; i < count; i++) {
+                cout << "Товар: " << products[i].name
+                    << ", Ціна: " << products[i].price
+                    << ", Кількість: " << products[i].quantity << endl;
+            }
+        }
+        else if (choice == 4) {
             cout << "Вихід з програми.\n";
-            return 0;
-
-        default:
-            cout << "Невірний вибір. Спробуйте знову.\n";
+            break;
         }
     }
 
-   
+    return 0;
 }
