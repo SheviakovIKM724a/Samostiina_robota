@@ -11,7 +11,7 @@ struct Student {
 int main() {
     
     system("chcp 1251 > nul"); //підключення української мови
-
+    
     int count;
     cout << "Введіть кількість студентів: ";
     cin >> count;
