@@ -2,81 +2,88 @@
 
 using namespace std;
 
-struct Product {
-    char name[50];  // Назва товару
-    float price;    // Ціна товару
-    int quantity;   // Кількість товару на складі
+struct Book {
+    char title[100];
+    char author[100];
+    int year;
 };
 
 int main() {
 
     system("chcp 1251 > nul"); //підключення української мови
 
-    Product products[10];  // Масив для 10 товарів
-    int count = 0;         // Лічильник для кількості товарів
-    int choice;
+    Book library[100];
+    int count = 0, choice;
 
     while (true) {
         cout << "\nМеню:\n";
-        cout << "1. Додати товар\n";
-        cout << "2. Оновити кількість товару\n";
-        cout << "3. Показати всі товари\n";
-        cout << "4. Вийти\n";
+        cout << "1. Додати книгу\n";
+        cout << "2. Пошук книги за автором\n";
+        cout << "3. Пошук книги за роком видання\n";
+        cout << "4. Показати всі книги\n";
+        cout << "5. Вихід\n";
         cout << "Виберіть опцію: ";
         cin >> choice;
 
         if (choice == 1) {
-            cout << "Введіть назву товару: ";
-            cin >> products[count].name;
-            cout << "Введіть ціну товару: ";
-            cin >> products[count].price;
-            cout << "Введіть кількість товару: ";
-            cin >> products[count].quantity;
+            cout << "Введіть назву книги: ";
+            cin >> library[count].title;
+            cout << "Введіть автора книги: ";
+            cin >> library[count].author;
+            cout << "Введіть рік видання книги: ";
+            cin >> library[count].year;
             count++;
         }
         else if (choice == 2) {
-            char name[50];
-            cout << "Введіть назву товару: ";
-            cin >> name;
-
+            char author[100];
+            cout << "Введіть автора для пошуку: ";
+            cin >> author;
             bool found = false;
             for (int i = 0; i < count; i++) {
-                // Порівнюємо рядки по символах
-                for (int j = 0; products[i].name[j] != '\0' || name[j] != '\0'; j++) {
-                    if (products[i].name[j] != name[j]) {
-                        found = false;
+                bool match = true;
+                for (int j = 0; library[i].author[j] != '\0' || author[j] != '\0'; j++) {
+                    if (library[i].author[j] != author[j]) {
+                        match = false;
                         break;
                     }
-                    else {
-                        found = true;
-                    }
                 }
-
-                if (found) {
-                    int quantity;
-                    cout << "Введіть нову кількість товару: ";
-                    cin >> quantity;
-                    products[i].quantity = quantity;
-                    break;
+                if (match) {
+                    cout << "Знайдена книга: " << library[i].title << ", рік видання: " << library[i].year << endl;
+                    found = true;
                 }
             }
-
             if (!found) {
-                cout << "Товар не знайдено.\n";
+                cout << "Книги цього автора не знайдено.\n";
             }
         }
         else if (choice == 3) {
+            int year;
+            cout << "Введіть рік видання для пошуку: ";
+            cin >> year;
+            bool found = false;
             for (int i = 0; i < count; i++) {
-                cout << "Товар: " << products[i].name
-                    << ", Ціна: " << products[i].price
-                    << ", Кількість: " << products[i].quantity << endl;
+                if (library[i].year == year) {
+                    cout << "Знайдена книга: " << library[i].title << " автора: " << library[i].author << endl;
+                    found = true;
+                }
+            }
+            if (!found) {
+                cout << "Книги цього року видання не знайдено.\n";
             }
         }
         else if (choice == 4) {
-            cout << "Вихід з програми.\n";
+            for (int i = 0; i < count; i++) {
+                cout << "Назва: " << library[i].title << ", Автор: " << library[i].author << ", Рік видання: " << library[i].year << endl;
+            }
+        }
+        else if (choice == 5) {
+            cout << "До побачення!\n";
             break;
+        }
+        else {
+            cout << "Невірний вибір. Спробуйте ще раз.\n";
         }
     }
 
-    return 0;
+
 }
